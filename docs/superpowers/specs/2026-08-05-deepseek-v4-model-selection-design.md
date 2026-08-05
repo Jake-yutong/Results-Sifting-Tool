@@ -30,7 +30,7 @@ Both DeepSeek V4 options use the existing `https://api.deepseek.com` base URL an
 - non-streaming behavior;
 - the existing JSON response requirement used by literature screening.
 
-Provider-specific fields are supplied through the OpenAI client's extra request body mechanism so the integration remains compatible with the OpenAI-style SDK used by the project.
+Following DeepSeek's OpenAI SDK guidance, `thinking` is supplied through the client's extra request body mechanism and `reasoning_effort` is passed as a normal Chat Completions argument.
 
 The server accepts only the three known model identifiers. Missing or unknown values fall back to `deepseek-v4-pro` for backward compatibility and to prevent arbitrary model names from reaching the provider.
 
