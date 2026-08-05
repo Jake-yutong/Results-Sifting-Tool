@@ -694,7 +694,8 @@
                     
                     <p class="hint" data-i18n="hint-ai-model" style="margin-bottom: 0.5rem;">Select AI Model</p>
                     <select id="aiModel" class="form-input" style="margin-bottom: 1rem;">
-                        <option value="deepseek" data-i18n="model-deepseek">DeepSeek Chat</option>
+                        <option value="deepseek-v4-pro" data-i18n="model-deepseek-v4-pro">DeepSeek V4 Pro</option>
+                        <option value="deepseek-v4-flash" data-i18n="model-deepseek-v4-flash">DeepSeek V4 Flash</option>
                         <option value="minimax" data-i18n="model-minimax">MiniMax-M2.1</option>
                     </select>
                     
@@ -815,9 +816,10 @@
                 'hint-remove-duplicates': 'Removes duplicate entries across files (by DOI and title). First occurrence is kept, subsequent duplicates are removed.',
                 'label-ai': 'AI-Powered Screening (Optional)',
                 'hint-ai-model': 'Select AI Model',
-                'model-deepseek': 'DeepSeek Chat',
+                'model-deepseek-v4-pro': 'DeepSeek V4 Pro',
+                'model-deepseek-v4-flash': 'DeepSeek V4 Flash',
                 'model-minimax': 'MiniMax-M2.1',
-                'hint-api-key': 'API Key (DeepSeek or MiniMax)',
+                'hint-api-key': 'API Key (DeepSeek V4 or MiniMax)',
                 'placeholder-api-key': 'sk-...',
                 'hint-ai-criteria': 'Natural language exclusion criteria',
                 'placeholder-ai': 'e.g., Exclude all non-AI-driven gamification studies...',
@@ -859,7 +861,8 @@
                 'hint-remove-duplicates': '跨文件去除重复条目（基于DOI和标题）。保留首次出现的记录，删除后续重复项。',
                 'label-ai': 'AI 智能筛选（可选）',
                 'hint-ai-model': '选择 AI 模型',
-                'model-deepseek': 'DeepSeek Chat',
+                'model-deepseek-v4-pro': 'DeepSeek V4 Pro',
+                'model-deepseek-v4-flash': 'DeepSeek V4 Flash',
                 'model-minimax': 'MiniMax-M2.1',
                 'hint-api-key': 'API 密钥（DeepSeek 或 MiniMax）',
                 'placeholder-api-key': 'sk-...',
@@ -978,7 +981,7 @@
         // AI Model Select Icon Change
         function updateModelIcon() {
             const selectedModel = aiModelSelect.value;
-            if (selectedModel === 'deepseek') {
+            if (selectedModel.startsWith('deepseek-v4-')) {
                 aiModelSelect.style.backgroundImage = "url('/static/images/deepseek-ai-icon-seeklogo.png'), linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%), linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%)";
             } else if (selectedModel === 'minimax') {
                 aiModelSelect.style.backgroundImage = "url('/static/images/minimax-color.png'), linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%), linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%)";

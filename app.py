@@ -23,6 +23,12 @@ from bibtexparser.bibdatabase import BibDatabase
 from striprtf.striprtf import rtf_to_text
 import re
 
+from ai_models import (
+    DEFAULT_AI_MODEL,
+    create_deepseek_completion,
+    normalize_ai_model,
+)
+
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max file size
 
@@ -826,7 +832,7 @@ def screen_literature_task(task_id, df, title_abstract_keywords, journal_keyword
                 tasks[task_id]['message'] = 'Connecting to AI...'
                 
                 # Determine which AI model to use
-                ai_model = kwargs.get('ai_model', 'deepseek')  # Default to deepseek
+                ai_model = normalize_ai_model(kwargs.get('ai_model'))
                 
                 if ai_model == 'minimax':
                     # Use MiniMax-M2 with Anthropic SDK
@@ -852,8 +858,8 @@ def screen_literature_task(task_id, df, title_abstract_keywords, journal_keyword
                         base_url="https://api.deepseek.com",
                         timeout=httpx.Timeout(60.0, connect=10.0)  # 60s total, 10s connect
                     )
-                    model_name = "deepseek-chat"
-                    print(f"🤖 Using DeepSeek model", flush=True)
+                    model_name = ai_model
+                    print(f"🤖 Using DeepSeek model: {model_name}", flush=True)
                 
                 # Only screen papers that passed the keyword filter
                 candidates = df[df['_EXCLUDED'] == False]
@@ -987,14 +993,10 @@ JSON format:
                             
                             for attempt in range(max_retries):
                                 try:
-                                    response = client.chat.completions.create(
-                                        model="deepseek-chat",
-                                        messages=[
-                                            {"role": "system", "content": "You are a paper screening assistant. Output ONLY valid JSON: {\"exclude\": true/false, \"reason\": \"text\"}. Be concise."},
-                                            {"role": "user", "content": prompt}
-                                        ],
-                                        response_format={"type": "json_object"},
-                                        temperature=0.0
+                                    response = create_deepseek_completion(
+                                        client,
+                                        ai_model,
+                                        prompt,
                                     )
                                     
                                     result = json.loads(response.choices[0].message.content)
@@ -1098,7 +1100,9 @@ def screen():
         journal_keywords = request.form.get('journal_keywords', '')
         api_key = request.form.get('api_key', '').strip()
         ai_criteria = request.form.get('ai_criteria', '').strip()
-        ai_model = request.form.get('ai_model', 'deepseek').strip()  # Get selected model
+        ai_model = normalize_ai_model(
+            request.form.get('ai_model', DEFAULT_AI_MODEL).strip()
+        )
         
         # Read and merge files
         dfs = []
