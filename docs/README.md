@@ -11,7 +11,7 @@ A Python-based tool for preliminary screening in systematic reviews, meta-analys
 
 ### Key Features from v1.2.0
 
-- **Multi-Model AI Support**: Choose between DeepSeek Chat and MiniMax-M2 models
+- **Multi-Model AI Support**: Choose DeepSeek V4 Pro, DeepSeek V4 Flash, or MiniMax-M2.1
 - **MiniMax-M2 Integration**: Advanced AI screening with thinking process visualization
 - **Flexible Model Selection**: Switch between different AI providers based on your needs
 - **Unified API Interface**: Simplified API key management for multiple providers
@@ -30,7 +30,7 @@ A Python-based tool for preliminary screening in systematic reviews, meta-analys
 - **Format standardization**: Automatically converts Web of Science export format to Scopus-compatible format for VOSviewer
 - **Keyword-based exclusion**: Filter records by title, abstract, or journal name
 - **Multi-Model AI Screening** (optional): 
-  - **DeepSeek Chat**: Fast and cost-effective AI-powered screening
+  - **DeepSeek V4**: Pro for quality or Flash for faster, lower-cost screening
   - **MiniMax-M2**: Advanced reasoning with thinking process visualization
   - Natural language-based filtering criteria for both models
 - **Flexible export options**: Download results in CSV, Excel, TXT, or RIS format
@@ -138,25 +138,25 @@ The web interface will be available at `http://127.0.0.1:5000`.
 
 ## AI Configuration (Optional)
 
-This tool supports two AI models for intelligent literature screening. Both models use natural language criteria for flexible and accurate filtering.
+This tool supports DeepSeek V4 Pro, DeepSeek V4 Flash, and MiniMax-M2.1 for intelligent literature screening. All choices use natural language criteria for flexible filtering.
 
-### DeepSeek Chat (Recommended for large batches)
+### DeepSeek V4 Pro / V4 Flash
 
 **Advantages:**
-- Fast response time (approximately 2-3 seconds per paper)
-- Cost-effective pricing
+- V4 Pro prioritizes screening quality and complex decisions
+- V4 Flash prioritizes response speed and lower cost
+- High-effort thinking mode for both models
 - Stable JSON output format
-- No strict rate limits
 
 **Setup:**
 1. Get your API key from [DeepSeek Platform](https://platform.deepseek.com/)
-2. In the web interface, select "DeepSeek Chat" from the model dropdown
+2. In the web interface, select "DeepSeek V4 Pro" or "DeepSeek V4 Flash"
 3. Enter your API key in the "API Key" field
 4. Add natural language exclusion criteria (e.g., "Exclude all papers not about K-12 education")
 
 **API Endpoint:** `https://api.deepseek.com`
 
-### MiniMax-M2 (Best for accuracy)
+### MiniMax-M2.1
 
 **Advantages:**
 - Advanced reasoning with thinking process
@@ -166,7 +166,7 @@ This tool supports two AI models for intelligent literature screening. Both mode
 
 **Setup:**
 1. Get your API key from [MiniMax Platform](https://platform.minimaxi.com/)
-2. In the web interface, select "MiniMax-M2" from the model dropdown
+2. In the web interface, select "MiniMax-M2.1" from the model dropdown
 3. Enter your API key in the "API Key" field
 4. Add natural language exclusion criteria
 
@@ -176,14 +176,12 @@ This tool supports two AI models for intelligent literature screening. Both mode
 
 ### Performance Comparison
 
-| Feature | DeepSeek Chat | MiniMax-M2 |
-|---------|---------------|------------|
-| Speed | Fast (2-3s/paper) | Moderate (4-5s/paper) |
-| Accuracy | High | Very High |
-| Cost | Low | Moderate |
-| Thinking Process | No | Yes |
-| Rate Limit | Generous | Standard |
-| Best For | Large batches (100+ papers) | High-precision screening |
+| Feature | DeepSeek V4 Pro | DeepSeek V4 Flash | MiniMax-M2.1 |
+|---------|-----------------|-------------------|---------------|
+| Speed | Moderate | Fastest | Moderate |
+| Cost | Higher | Lower | Moderate |
+| Thinking | High effort | High effort | Advanced |
+| Best For | Complex screening | Large batches | Complex screening |
 
 **Note:** The tool automatically selects the appropriate API endpoint based on your model choice.
 

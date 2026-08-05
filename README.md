@@ -21,11 +21,15 @@ python scripts/launch.py
 
 Access the application at http://127.0.0.1:5000
 
+### DeepSeek V4
+
+Choose **DeepSeek V4 Pro** for the strongest screening quality or **DeepSeek V4 Flash** for faster, lower-cost batches. Both choices use `https://api.deepseek.com`, enable thinking mode with `reasoning_effort="high"`, and accept the same DeepSeek API key.
+
 ## Core Features
 
 - **Multi-format Support**: CSV, Excel (.xlsx/.xls), RIS, BibTeX, RTF, TXT
 - **Keyword-based Filtering**: Title/Abstract/Journal blacklists
-- **AI-powered Screening**: Integrated DeepSeek and MiniMax-M2.1 models with dual verification
+- **AI-powered Screening**: Select DeepSeek V4 Pro, DeepSeek V4 Flash, or MiniMax-M2.1
 - **Intelligent Deduplication**: DOI and title-based duplicate detection
 - **Bilingual Interface**: Instant switching between English and Chinese
 - **Professional UI**: Dark/Light theme with academic styling

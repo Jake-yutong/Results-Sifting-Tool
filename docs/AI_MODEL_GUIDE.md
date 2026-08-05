@@ -2,7 +2,7 @@
 
 ## 模型选择指南 | Model Selection Guide
 
-### DeepSeek Chat
+### DeepSeek V4 Pro / V4 Flash
 
 **适用场景 | Best For:**
 - 大批量文献筛选（成本优化）
@@ -13,9 +13,9 @@
 - Standard exclusion criteria
 
 **特点 | Features:**
-- ⚡ 快速响应 | Fast response
-- 💰 经济实惠 | Cost-effective
-- 🎯 稳定可靠 | Reliable performance
+- 🧠 V4 Pro：更强筛选质量 | V4 Pro: strongest screening quality
+- ⚡ V4 Flash：响应更快、成本更低 | V4 Flash: faster and lower-cost
+- 💭 两者均启用高强度思考 | High-effort thinking enabled for both
 - 📊 JSON格式输出 | JSON format output
 
 **API配置 | API Setup:**
@@ -26,8 +26,14 @@ https://platform.deepseek.com/
 # 基础URL | Base URL
 https://api.deepseek.com
 
-# 模型名称 | Model name
-deepseek-chat
+# 模型名称 | Model names
+deepseek-v4-pro
+deepseek-v4-flash
+
+# 请求配置 | Request configuration
+thinking={"type": "enabled"}
+reasoning_effort="high"
+stream=false
 ```
 
 ---
@@ -108,14 +114,12 @@ Keep AI-driven gamified learning, exclude pure technical implementations and non
 
 ## 性能对比 | Performance Comparison
 
-| 指标 | DeepSeek Chat | MiniMax-M2 |
-|------|---------------|------------|
-| **速度 Speed** | ⚡⚡⚡⚡⚡ | ⚡⚡⚡⚡ |
-| **成本 Cost** | 💰 低 Low | 💰💰 中等 Medium |
-| **准确率 Accuracy** | 📊📊📊📊 | 📊📊📊📊📊 |
-| **推理能力 Reasoning** | 🧠🧠🧠 | 🧠🧠🧠🧠🧠 |
-| **透明度 Transparency** | 📄📄 | 📄📄📄📄📄 |
-| **复杂场景 Complex Cases** | ✓ | ✓✓ |
+| 指标 | DeepSeek V4 Pro | DeepSeek V4 Flash | MiniMax-M2.1 |
+|------|-----------------|-------------------|---------------|
+| **速度 Speed** | ⚡⚡⚡ | ⚡⚡⚡⚡⚡ | ⚡⚡⚡⚡ |
+| **成本 Cost** | 较高 Higher | 较低 Lower | 中等 Medium |
+| **推理 Reasoning** | High | High | Advanced |
+| **建议用途 Best for** | 复杂/边界判断 | 大批量初筛 | 复杂/边界判断 |
 
 ---
 
@@ -126,17 +130,19 @@ Keep AI-driven gamified learning, exclude pure technical implementations and non
 1. 打开工具 | Open tool
 2. 找到"Select AI Model"下拉菜单
 3. 选择模型：
-   - DeepSeek Chat
-   - MiniMax-M2
+   - DeepSeek V4 Pro
+   - DeepSeek V4 Flash
+   - MiniMax-M2.1
 4. 输入对应API密钥
 5. 开始筛选
 
 ### 程序化切换 | Programmatic Switch
 
 ```python
-# v1.2新增参数 | v1.2 new parameter
-ai_model = 'deepseek'  # 默认 | default
-ai_model = 'minimax'   # MiniMax-M2
+# 默认 | default
+ai_model = 'deepseek-v4-pro'
+ai_model = 'deepseek-v4-flash'
+ai_model = 'minimax'
 
 # 自动路由到正确的SDK | Auto-routes to correct SDK
 # OpenAI SDK for DeepSeek
@@ -147,11 +153,10 @@ ai_model = 'minimax'   # MiniMax-M2
 
 ## 成本估算 | Cost Estimation
 
-### DeepSeek Chat
-- **输入 Input**: ~¥0.001 / 1K tokens
-- **输出 Output**: ~¥0.002 / 1K tokens
-- **1000篇文献 1000 papers**: ~¥20-50
-- **适合 Best for**: 大规模筛选 | Large-scale screening
+### DeepSeek V4
+- **V4 Pro**: 优先质量和复杂判断 | Prioritize quality and complex decisions
+- **V4 Flash**: 优先速度和成本 | Prioritize speed and cost
+- **最新价格 Latest pricing**: 请查看 DeepSeek 官方定价页 | See the official DeepSeek pricing page
 
 ### MiniMax-M2
 - **输入 Input**: ~¥0.03 / 1K tokens

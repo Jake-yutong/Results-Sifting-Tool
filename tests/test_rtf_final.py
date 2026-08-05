@@ -163,13 +163,15 @@ def parse_rtf_file(file_content):
         raise ValueError(f"Error parsing RTF file: {str(e)}")
 
 
-# Test it
-rtf_file = '/Users/liyutong/Nutstore Files/我的坚果云/2026-2027春季学期课程文件/元分析/review searching/Literature-Screening-Tool/data/test_data.rtf'
-with open(rtf_file, 'rb') as f:
-    content = f.read()
+if __name__ == "__main__":
+    from pathlib import Path
 
-df = parse_rtf_file(content)
-print("\n✅ SUCCESS!")
-print(f"Parsed {len(df)} records")
-print("\nDataFrame:")
-print(df[['Title', 'Year', 'Authors', 'Source title']])
+    rtf_file = Path(__file__).resolve().parents[1] / "data" / "test_data.rtf"
+    with rtf_file.open("rb") as f:
+        content = f.read()
+
+    df = parse_rtf_file(content)
+    print("\nSUCCESS!")
+    print(f"Parsed {len(df)} records")
+    print("\nDataFrame:")
+    print(df[['Title', 'Year', 'Authors', 'Source title']])
