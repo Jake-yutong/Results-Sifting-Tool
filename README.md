@@ -25,6 +25,8 @@ Access the application at http://127.0.0.1:5000
 
 Choose **DeepSeek V4 Pro** for the strongest screening quality or **DeepSeek V4 Flash** for faster, lower-cost batches. Both choices use `https://api.deepseek.com`, enable thinking mode with `reasoning_effort="high"`, and accept the same DeepSeek API key.
 
+Before screening, enter the API key and click **Test API Connection**. The test sends one non-thinking request capped at 8 output tokens and reports the selected model and latency. If an AI request fails during formal screening, the task now stops with a categorized error instead of silently treating unscreened papers as retained.
+
 ## Core Features
 
 - **Multi-format Support**: CSV, Excel (.xlsx/.xls), RIS, BibTeX, RTF, TXT

@@ -36,6 +36,27 @@ reasoning_effort="high"
 stream=false
 ```
 
+### 测试 API 连接 | Test API Connection
+
+1. 在界面选择模型并输入对应 API 密钥。
+2. 点击 **测试 API 连接 | Test API Connection**。
+3. 成功时会显示实际模型和响应耗时；失败时会显示安全的错误分类。
+
+连接测试使用非思考模式并把最大输出限制为 8 tokens，只用于验证网络、密钥、模型和聊天接口。API 密钥不会写入日志或返回给浏览器。
+
+The connection test uses non-thinking mode with an 8-token output cap. It validates network access, credentials, the selected model, and the chat endpoint without logging or returning the API key.
+
+| 错误 | 含义 |
+|------|------|
+| `invalid_api_key` | 密钥无效或无权访问 |
+| `insufficient_balance` | API 账户余额不足 |
+| `rate_limited` | 请求频率达到限制 |
+| `network_error` | 服务进程无法访问供应商网络 |
+| `timeout` | 供应商响应超时 |
+| `provider_error` | 供应商拒绝了请求或参数 |
+
+正式 AI 筛选遇到供应商错误时会停止并显示错误，不再把未经过 AI 判断的论文静默算作保留。
+
 ---
 
 ### MiniMax-M2
