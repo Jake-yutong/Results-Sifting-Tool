@@ -14,6 +14,17 @@ class DeepSeekV4IntegrationTest(unittest.TestCase):
         self.assertIn('value="deepseek-v4-pro"', html)
         self.assertIn('value="deepseek-v4-flash"', html)
 
+    def test_index_exposes_api_connection_test_controls(self):
+        response = app.app.test_client().get("/")
+
+        html = response.get_data(as_text=True)
+
+        self.assertIn('id="testApiBtn"', html)
+        self.assertIn('id="apiTestStatus"', html)
+        self.assertIn("fetch('/test-ai-connection'", html)
+        self.assertEqual(html.count("'btn-test-api':"), 2)
+        self.assertEqual(html.count("'status-api-testing':"), 2)
+
     def test_screen_normalizes_unknown_model_before_starting_worker(self):
         with patch("app.threading.Thread") as thread:
             response = app.app.test_client().post(

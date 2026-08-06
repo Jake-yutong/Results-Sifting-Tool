@@ -416,6 +416,37 @@
             opacity: 0.5;
         }
 
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-focus);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary:disabled {
+            cursor: wait;
+            opacity: 0.6;
+        }
+
+        .api-test-status {
+            min-height: 1.25rem;
+            margin-top: 0.5rem;
+            font-size: 0.8125rem;
+            font-style: normal;
+        }
+
+        .api-test-status.success {
+            color: var(--success);
+        }
+
+        .api-test-status.error {
+            color: var(--danger);
+        }
+
         .btn-success {
             background: var(--success);
             color: white;
@@ -701,6 +732,8 @@
                     
                     <p class="hint" data-i18n="hint-api-key">API Key</p>
                     <input type="password" id="apiKey" class="form-input" placeholder="sk-..." data-i18n-placeholder="placeholder-api-key">
+                    <button type="button" id="testApiBtn" class="btn btn-secondary" style="margin-top: 0.75rem;" data-i18n="btn-test-api">Test API Connection</button>
+                    <p id="apiTestStatus" class="api-test-status" role="status" aria-live="polite"></p>
 
                     <p class="hint" data-i18n="hint-ai-criteria" style="margin-top: 1rem;">Natural language exclusion criteria</p>
                     <textarea id="aiCriteria" style="min-height: 100px;"
@@ -821,6 +854,11 @@
                 'model-minimax': 'MiniMax-M2.1',
                 'hint-api-key': 'API Key (DeepSeek V4 or MiniMax)',
                 'placeholder-api-key': 'sk-...',
+                'btn-test-api': 'Test API Connection',
+                'status-api-testing': 'Testing connection...',
+                'status-api-key-required': 'Enter an API key before testing.',
+                'status-api-success': 'Connected to {model} in {latency} ms.',
+                'status-api-request-failed': 'Connection test failed. Please try again.',
                 'hint-ai-criteria': 'Natural language exclusion criteria',
                 'placeholder-ai': 'e.g., Exclude all non-AI-driven gamification studies...',
                 'results-title': 'Screening Results',
@@ -866,6 +904,11 @@
                 'model-minimax': 'MiniMax-M2.1',
                 'hint-api-key': 'API 密钥（DeepSeek 或 MiniMax）',
                 'placeholder-api-key': 'sk-...',
+                'btn-test-api': '测试 API 连接',
+                'status-api-testing': '正在测试连接...',
+                'status-api-key-required': '请先输入 API 密钥。',
+                'status-api-success': '已连接 {model}，耗时 {latency} 毫秒。',
+                'status-api-request-failed': '连接测试失败，请重试。',
                 'hint-ai-criteria': '自然语言排除标准',
                 'placeholder-ai': '例如：排除所有非人工智能驱动的游戏化研究...',
                 'results-title': '筛选结果',
@@ -959,6 +1002,9 @@
         const errorAlert = document.getElementById('errorAlert');
         const resultsSection = document.getElementById('resultsSection');
         const aiModelSelect = document.getElementById('aiModel');
+        const apiKeyInput = document.getElementById('apiKey');
+        const testApiBtn = document.getElementById('testApiBtn');
+        const apiTestStatus = document.getElementById('apiTestStatus');
 
         let selectedFiles = [];
         let currentTaskId = null;
@@ -995,6 +1041,50 @@
 
         // Update icon when model changes
         aiModelSelect.addEventListener('change', updateModelIcon);
+
+        testApiBtn.addEventListener('click', async () => {
+            const apiKey = apiKeyInput.value.trim();
+            const trans = translations[currentLang];
+
+            apiTestStatus.className = 'api-test-status';
+            if (!apiKey) {
+                apiTestStatus.textContent = trans['status-api-key-required'];
+                apiTestStatus.classList.add('error');
+                return;
+            }
+
+            testApiBtn.disabled = true;
+            testApiBtn.textContent = trans['status-api-testing'];
+            apiTestStatus.textContent = trans['status-api-testing'];
+
+            try {
+                const response = await fetch('/test-ai-connection', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        api_key: apiKey,
+                        ai_model: aiModelSelect.value
+                    })
+                });
+                const data = await response.json();
+
+                if (response.ok && data.ok) {
+                    apiTestStatus.textContent = trans['status-api-success']
+                        .replace('{model}', data.model)
+                        .replace('{latency}', data.latency_ms);
+                    apiTestStatus.classList.add('success');
+                } else {
+                    apiTestStatus.textContent = data.message || trans['status-api-request-failed'];
+                    apiTestStatus.classList.add('error');
+                }
+            } catch (error) {
+                apiTestStatus.textContent = trans['status-api-request-failed'];
+                apiTestStatus.classList.add('error');
+            } finally {
+                testApiBtn.disabled = false;
+                testApiBtn.textContent = trans['btn-test-api'];
+            }
+        });
 
         // File upload handling
         uploadZone.addEventListener('click', () => fileInput.click());
