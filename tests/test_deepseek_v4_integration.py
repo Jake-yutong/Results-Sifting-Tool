@@ -24,6 +24,8 @@ class DeepSeekV4IntegrationTest(unittest.TestCase):
         self.assertIn("fetch('/test-ai-connection'", html)
         self.assertEqual(html.count("'btn-test-api':"), 2)
         self.assertEqual(html.count("'status-api-testing':"), 2)
+        self.assertEqual(html.count("'api-error-network_error':"), 2)
+        self.assertIn("`api-error-${data.error}`", html)
 
     def test_screen_normalizes_unknown_model_before_starting_worker(self):
         with patch("app.threading.Thread") as thread:

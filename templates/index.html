@@ -859,6 +859,14 @@
                 'status-api-key-required': 'Enter an API key before testing.',
                 'status-api-success': 'Connected to {model} in {latency} ms.',
                 'status-api-request-failed': 'Connection test failed. Please try again.',
+                'api-error-invalid_api_key': 'The API key is invalid or unauthorized.',
+                'api-error-insufficient_balance': 'The API account has insufficient balance.',
+                'api-error-rate_limited': 'The API rate limit was reached. Try again later.',
+                'api-error-network_error': 'Cannot reach the AI provider. Check network or proxy access.',
+                'api-error-timeout': 'The AI provider timed out. Try again.',
+                'api-error-invalid_response': 'The AI provider returned an invalid response.',
+                'api-error-provider_error': 'The AI provider rejected the request.',
+                'api-error-unexpected_error': 'The AI request failed unexpectedly.',
                 'hint-ai-criteria': 'Natural language exclusion criteria',
                 'placeholder-ai': 'e.g., Exclude all non-AI-driven gamification studies...',
                 'results-title': 'Screening Results',
@@ -909,6 +917,14 @@
                 'status-api-key-required': '请先输入 API 密钥。',
                 'status-api-success': '已连接 {model}，耗时 {latency} 毫秒。',
                 'status-api-request-failed': '连接测试失败，请重试。',
+                'api-error-invalid_api_key': 'API 密钥无效或没有访问权限。',
+                'api-error-insufficient_balance': 'API 账户余额不足。',
+                'api-error-rate_limited': 'API 请求频率已达到限制，请稍后重试。',
+                'api-error-network_error': '无法连接 AI 服务商，请检查网络或代理设置。',
+                'api-error-timeout': 'AI 服务商响应超时，请重试。',
+                'api-error-invalid_response': 'AI 服务商返回了无效响应。',
+                'api-error-provider_error': 'AI 服务商拒绝了该请求。',
+                'api-error-unexpected_error': 'AI 请求意外失败。',
                 'hint-ai-criteria': '自然语言排除标准',
                 'placeholder-ai': '例如：排除所有非人工智能驱动的游戏化研究...',
                 'results-title': '筛选结果',
@@ -1074,7 +1090,10 @@
                         .replace('{latency}', data.latency_ms);
                     apiTestStatus.classList.add('success');
                 } else {
-                    apiTestStatus.textContent = data.message || trans['status-api-request-failed'];
+                    const errorKey = `api-error-${data.error}`;
+                    apiTestStatus.textContent = trans[errorKey]
+                        || data.message
+                        || trans['status-api-request-failed'];
                     apiTestStatus.classList.add('error');
                 }
             } catch (error) {
