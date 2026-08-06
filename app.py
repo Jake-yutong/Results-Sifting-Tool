@@ -25,6 +25,8 @@ import re
 
 from ai_models import (
     DEFAULT_AI_MODEL,
+    check_ai_connection,
+    classify_ai_error,
     create_deepseek_completion,
     normalize_ai_model,
 )
@@ -1034,14 +1036,15 @@ JSON format:
                             
                     except Exception as e:
                         print(f"   ⚠️ AI Error for row {idx}: {e}", flush=True)
-                        continue
+                        raise
                 
                 print("🤖 AI Screening Completed.", flush=True)
                         
             except Exception as e:
-                print(f"❌ AI Setup Error: {e}", flush=True)
-                # Continue without AI if it fails, or maybe we should fail? 
-                # For now, let's just log it and finish.
+                _, category, safe_message = classify_ai_error(e)
+                task_error = RuntimeError(f"{category}: {safe_message}")
+                print(f"❌ AI Setup Error: {task_error}", flush=True)
+                raise task_error from e
 
         # Split dataframes
         df_kept = df[df['_EXCLUDED'] == False].drop(columns=['_EXCLUDED', '_EXCLUSION_REASON'])
@@ -1082,6 +1085,32 @@ def index():
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
     return response
+
+
+@app.route('/test-ai-connection', methods=['POST'])
+def test_ai_connection_route():
+    """Test the selected AI provider with a minimal, low-token request."""
+    data = request.get_json(silent=True) or {}
+    api_key = str(data.get('api_key') or '').strip()
+    ai_model = normalize_ai_model(data.get('ai_model'))
+
+    if not api_key:
+        return jsonify({
+            'ok': False,
+            'error': 'missing_api_key',
+            'message': 'Enter an API key before testing the connection.',
+        }), 400
+
+    try:
+        result = check_ai_connection(api_key, ai_model)
+        return jsonify({'ok': True, **result})
+    except Exception as e:
+        status_code, category, safe_message = classify_ai_error(e)
+        return jsonify({
+            'ok': False,
+            'error': category,
+            'message': safe_message,
+        }), status_code
 
 
 @app.route('/screen', methods=['POST'])
