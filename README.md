@@ -30,6 +30,7 @@ Before screening, enter the API key and click **Test API Connection**. The test 
 ## Core Features
 
 - **Multi-format Support**: CSV, Excel (.xlsx/.xls), RIS, BibTeX, RTF, TXT
+- Files downloaded as `cleaned_data_*.csv` can be uploaded again for a subsequent screening run.
 - **Keyword-based Filtering**: Title/Abstract/Journal blacklists
 - **AI-powered Screening**: Select DeepSeek V4 Pro, DeepSeek V4 Flash, or MiniMax-M2.1
 - **Intelligent Deduplication**: DOI and title-based duplicate detection
