@@ -8,6 +8,7 @@ Version 1.2: Added MiniMax-M2 model support with multi-model selection
 """
 
 from flask import Flask, render_template, request, jsonify, send_file
+import builtins
 import pandas as pd
 import io
 import zipfile
@@ -30,6 +31,17 @@ from ai_models import (
     create_deepseek_completion,
     normalize_ai_model,
 )
+
+
+def safe_print(*args, **kwargs):
+    """Write diagnostics without allowing a broken console to fail work."""
+    try:
+        builtins.print(*args, **kwargs)
+    except (OSError, ValueError):
+        return
+
+
+print = safe_print
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max file size
